@@ -1,0 +1,13 @@
+#header-modal-text .bg {
+    background-image: url('../images/bg-83.jpg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    opacity:1;
+}#action-text-btn-2 .bg {
+    background-image: url('../images/map.png');
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: 50% auto;
+    opacity:0.4;
+}
