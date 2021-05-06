@@ -329,9 +329,9 @@ if ( ! function_exists('get_logo')){
 	{
 		$logo = get_option("logo");
 		if($logo ==""){
-			return asset("public/images/company-logo.png");
+			return asset("images/company-logo.png");
 		}
-		return asset("public/uploads/media/$logo"); 
+		return asset("uploads/media/$logo"); 
 	}
 }
 
@@ -340,9 +340,9 @@ if ( ! function_exists('get_favicon')){
 	{
 		$favicon = get_option("favicon");
 		if($favicon == ""){
-			return asset("public/images/favicon.png");
+			return asset("images/favicon.png");
 		}
-		return asset("public/uploads/media/$favicon"); 
+		return asset("uploads/media/$favicon"); 
 	}
 }
 
@@ -818,7 +818,7 @@ if ( ! function_exists('get_company_logo')){
 		if($logo == ''){
 			return get_logo();
 		}
-		return asset("public/uploads/company/$logo"); 
+		return asset("uploads/company/$logo"); 
 	}
 }
 
@@ -1447,7 +1447,7 @@ if ( ! function_exists('theme_asset'))
     function theme_asset($path){
 		$theme = get_option('active_theme','default');
 
-		return asset("public/theme/$theme/$path");		
+		return asset("theme/$theme/$path");		
     }
 }
 
