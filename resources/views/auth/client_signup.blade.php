@@ -6,6 +6,16 @@
     }
 
 </style>
+<link href="{{ asset('theme/default/assets/css/bootstrap.css') }}" rel="stylesheet" type="text/css" media="all" />
+<link href="{{ asset('theme/default/assets/css/stack-interface.css') }}" rel="stylesheet" type="text/css"
+    media="all" />
+<link href="{{ asset('theme/default/assets/css/socicon.css') }}" rel="stylesheet" type="text/css" media="all" />
+<link href="{{ asset('theme/default/assets/css/lightbox.min.css') }}" rel="stylesheet" type="text/css" media="all" />
+<link href="{{ asset('theme/default/assets/css/flickity.css') }}" rel="stylesheet" type="text/css" media="all" />
+<link href="{{ asset('theme/default/assets/css/iconsmind.css') }}" rel="stylesheet" type="text/css" media="all" />
+<link href="{{ asset('theme/default/assets/css/jquery.steps.css') }}" rel="stylesheet" type="text/css" media="all" />
+<link href="{{ asset('theme/default/assets/css/theme.css') }}" rel="stylesheet" type="text/css" media="all" />
+<link href="{{ asset('theme/default/assets/css/custom.css') }}" rel="stylesheet" type="text/css" media="all" />
 @section('content')
     <!-- begin:: Page -->
     <div class="kt-grid kt-grid--ver kt-grid--root">
@@ -67,10 +77,10 @@
                                 <div class="tab">
                                     <div class="form-group row">
                                         <div class="col-md-12">
-                                            <input id="name" type="text" placeholder="{{ _lang('Business Name') }}"
+                                            <input type="text" placeholder="{{ _lang('Store Name') }}"
                                                 class="form-control{{ $errors->has('business_name') ? ' is-invalid' : '' }}"
-                                                name="business_name" value="{{ old('business_name') }}"
-                                                oninput="this.className = ''" required autofocus>
+                                                name="business_name" value="{{ old('business_name') }}" required
+                                                autofocus>
 
                                             @if ($errors->has('business_name'))
                                                 <span class="invalid-feedback">
@@ -84,8 +94,7 @@
                                         <div class="col-md-12">
                                             <input id="name" type="text" placeholder="{{ _lang('Name') }}"
                                                 class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}"
-                                                name="name" value="{{ old('name') }}" oninput="this.className = ''"
-                                                required autofocus>
+                                                name="name" value="{{ old('name') }}" required autofocus>
 
                                             @if ($errors->has('name'))
                                                 <span class="invalid-feedback">
@@ -100,8 +109,7 @@
                                         <div class="col-md-12">
                                             <input id="email" type="email" placeholder="{{ _lang('E-Mail Address') }}"
                                                 class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}"
-                                                name="email" value="{{ old('email') }}" oninput="this.className = ''"
-                                                required>
+                                                name="email" value="{{ old('email') }}" required>
 
                                             @if ($errors->has('email'))
                                                 <span class="invalid-feedback">
@@ -113,7 +121,7 @@
                                 </div>
 
                                 <div class="tab">
-                                    <div class="form-group row">
+                                    {{-- <div class="form-group row">
                                         <div class="col-md-12">
                                             <select id="package"
                                                 class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}"
@@ -146,8 +154,84 @@
                                                 </span>
                                             @endif
                                         </div>
-                                    </div>
+                                    </div> --}}
+                                    <div class="container">
 
+                                        <div class="row pricing-headline">
+                                            <div class="col-md-12 text-center">
+                                                <button class="btn btn--primary type--uppercase btn-not-hop"
+                                                    id="btn-monthly">
+                                                    {{ _lang('Monthly Plan') }}
+                                                </button>
+                                                <button class="btn btn--primary type--uppercase btn-hop" id="btn-yearly">
+                                                    {{ _lang('Yearly Plan') }}
+                                                </button>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row pricing-content">
+                                            @php $currency = currency(get_option('currency','USD')); @endphp
+
+                                            @foreach (\App\Package::all() as $package)
+                                                <div class="col-md-4 monthly-package">
+                                                    <div
+                                                        class="pricing pricing-1 boxed boxed--lg boxed--border boxed--emphasis">
+                                                        <h3> {{ $package->package_name }}</h3>
+                                                        <span class="h2">
+                                                            <strong>{{ g_decimal_place($package->cost_per_month, $currency) }}</strong>
+                                                        </span>
+                                                        <span class="type--fine-print">{{ _lang('Per Month') }}.</span>
+                                                        @if ($package->is_featured == 1)
+                                                            <span class="label">{{ _lang('Value') }}</span>
+                                                        @endif
+                                                        <hr>
+                                                        <ul>
+                                                            <li>
+                                                                <span class="checkmark bg--primary-1"></span>
+                                                                <span>{{ _dlang(unserialize($package->websites_limit)['monthly']) . ' ' . _lang('Websites') }}</span>
+                                                            </li>
+                                                        </ul>
+                                                        <a class="btn btn--{{ $package->is_featured == 1 ? 'primary-1' : 'primary' }}"
+                                                            href="{{ url('sign_up?package_type=monthly&package=' . $package->id) }}">
+                                                            <span class="btn__text">
+                                                                {{ _lang('Get Started') }}
+                                                            </span>
+                                                        </a>
+                                                    </div>
+                                                    <!--end of pricing-->
+                                                </div>
+                                                <div class="col-md-4 yearly-package" style="display:none">
+                                                    <div
+                                                        class="pricing pricing-1 boxed boxed--lg boxed--border boxed--emphasis">
+                                                        <h3> {{ $package->package_name }}</h3>
+                                                        <span class="h2">
+                                                            <strong>{{ g_decimal_place($package->cost_per_year, $currency) }}</strong>
+                                                        </span>
+                                                        <span class="type--fine-print">{{ _lang('Per Year') }}.</span>
+                                                        @if ($package->is_featured == 1)
+                                                            <span class="label">{{ _lang('Value') }}</span>
+                                                        @endif
+                                                        <hr>
+                                                        <ul>
+                                                            <li>
+                                                                <span class="checkmark bg--primary-1"></span>
+                                                                <span>{{ _dlang(unserialize($package->websites_limit)['yearly']) . ' ' . _lang('Websites') }}</span>
+                                                            </li>
+                                                        </ul>
+                                                        <a class="btn btn--{{ $package->is_featured == 1 ? 'primary-1' : 'primary' }}"
+                                                            href="{{ url('sign_up?package_type=yearly&package=' . $package->id) }}">
+                                                            <span class="btn__text">
+                                                                {{ _lang('Get Started') }}
+                                                            </span>
+                                                        </a>
+                                                    </div>
+                                                    <!--end of pricing-->
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                        <!--end of row-->
+                                    </div>
                                 </div>
                                 <div class="tab">
                                     <div class="form-group row">
@@ -155,7 +239,7 @@
                                         <div class="col-md-12">
                                             <input id="password" type="password" placeholder="{{ _lang('Password') }}"
                                                 class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}"
-                                                name="password" oninput="this.className = ''" required>
+                                                name="password" required>
 
                                             @if ($errors->has('password'))
                                                 <span class="invalid-feedback">
@@ -169,16 +253,16 @@
                                         <div class="col-md-12">
                                             <input id="password-confirm" type="password" class="form-control"
                                                 placeholder="{{ _lang('Confirm Password') }}"
-                                                name="password_confirmation" oninput="this.className = ''" required>
+                                                name="password_confirmation" required>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="kt-login__actions mt-3 text-right">
                                     <button class="btn btn-sm btn-outline-primary btn-elevate kt-login__btn-primary"
-                                        type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                                        type="submit" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
                                     <button class="btn btn-sm btn-outline-primary btn-elevate kt-login__btn-primary"
-                                        type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                                        type="submit" id="nextBtn" onclick="nextPrev(1)">Next</button>
 
                                 </div>
                             </form>
@@ -193,6 +277,9 @@
             </div>
         </div>
     </div>
+
+@endsection
+@section('js-script')
     <script>
         var currentTab = 0; // Current tab is set to be the first tab (0)
         showTab(currentTab); // Display the current tab
@@ -212,8 +299,6 @@
             } else {
                 document.getElementById("nextBtn").innerHTML = "Next";
             }
-            // ... and run a function that displays the correct step indicator:
-            /*  fixStepIndicator(n) */
         }
 
         function nextPrev(n) {
@@ -252,6 +337,33 @@
             }
             return valid; // return the valid status
         }
+
+    </script>
+    <script type="text/javascript">
+        (function($) {
+            "use strict";
+            $('body').on('click', '#btn-monthly', function() {
+                $(this).addClass('btn-hop');
+                $(this).removeClass('btn-not-hop');
+                $('#btn-yearly').removeClass('btn-hop');
+                $('#btn-yearly').addClass('btn-not-hop');
+                $('.yearly-package').css('display', 'none');
+                $('.monthly-package').css('display', 'block');
+                $('#btn-yearly').removeClass('btn-primary').addClass('btn-outline-info');
+                $('#btn-monthly').removeClass('btn-outline-info').addClass('btn-primary');
+            });
+            $('body').on('click', '#btn-yearly', function() {
+                $(this).addClass('btn-hop');
+                $(this).removeClass('btn-not-hop');
+                $('#btn-monthly').removeClass('btn-hop');
+                $('#btn-monthly').addClass('btn-not-hop');
+                $('.monthly-package').css('display', 'none');
+                $('.yearly-package').css('display', 'block');
+                $('#btn-monthly').removeClass('btn-primary').addClass('btn-outline-info');
+                $('#btn-yearly').removeClass('btn-outline-info').addClass('btn-primary');
+            });
+
+        });
 
     </script>
 @endsection
